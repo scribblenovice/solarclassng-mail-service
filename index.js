@@ -28,7 +28,7 @@ app.post("/receive-email", (req, res) => {
   console.log(req.body);
   const { name, email, subject, message } = req.body;
   const mailOptions = {
-    from: `${name.toUpperCase()} ${email}`,
+    from: `"${name}" <${email}>`,
     to: "contact@solarclassng.com",
     subject: subject,
     text: message,
