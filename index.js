@@ -10,13 +10,17 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
+let smptUser = process.env.SMTP_USERNAME;
+let smptPassword = process.env.SMTP_PASSWORD;
+
+
 const transporter = nodemailer.createTransport({
   host: "mail.solarclassng.com",
   port: 587, // or the appropriate port for your mail service
   secure: false, // true for 465, false for other ports
   auth: {
-    user: process.env.REACT_APP_SMTP_USERNAME,
-    pass: process.env.REACT_APP_SMTP_USERNAME,
+    user: smptUser,
+    pass: smptPassword,
   },
 });
 
