@@ -26,11 +26,11 @@ const transporter = nodemailer.createTransport({
 
 app.post("/receive-email", (req, res) => {
   console.log(req.body);
-  const { name, email, subject, message } = req.body;
+  const { name, email, subject, message, phoneNumber } = req.body;
   const senderName = name;
   const senderEmail = email;
   const mailOptions = {
-    from: `${senderName} <${senderEmail}>`,
+    from: `${senderName} <${senderEmail}> <${phoneNumber}>`,
     to: "contact@solarclassng.com",
     subject: subject,
     text: message,
@@ -46,27 +46,6 @@ app.post("/receive-email", (req, res) => {
     }
   });
 });
-
-// app.post('/send-email', (req, res) => {
-//   const { to, subject, text } = req.body;
-
-//   const mailOptions = {
-//     from: 'your_email@gmail.com',
-//     to: to,
-//     subject: subject,
-//     text: text
-//   };
-
-//   transporter.sendMail(mailOptions, function(error, info){
-//     if (error) {
-//       console.log(error);
-//       res.status(500).send('Failed to send email');
-//     } else {
-//       console.log('Email sent: ' + info.response);
-//       res.status(200).send('Email sent successfully');
-//     }
-//   });
-// });
 
 app.listen(3001, () => {
   console.log("Server running on port 3001");
