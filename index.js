@@ -30,7 +30,7 @@ app.post("/receive-email", (req, res) => {
   const senderName = name;
   const senderEmail = email;
   const mailOptions = {
-    from: `${senderName} <${senderEmail}>  <${phoneNumber}>`,
+    from: `${senderName} <${senderEmail}>`,
     to: "contact@solarclassng.com",
     subject: subject,
     text: `
