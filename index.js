@@ -30,10 +30,12 @@ app.post("/receive-email", (req, res) => {
   const senderName = name;
   const senderEmail = email;
   const mailOptions = {
-    from: `${senderName} <${senderEmail}> <${phoneNumber}>`,
+    from: `${senderName} <${senderEmail}>  <${phoneNumber}>`,
     to: "contact@solarclassng.com",
     subject: subject,
-    text: message,
+    text: `
+    ${message}
+    ${phoneNumber ? `Phone Number: ${phoneNumber}` : ''}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
