@@ -15,9 +15,9 @@ let smptPassword = process.env.SMTP_PASSWORD;
 
 
 const transporter = nodemailer.createTransport({
-  host: "mail.solarclassng.com",
-  port: 587, // or the appropriate port for your mail service
-  secure: false, // true for 465, false for other ports
+  host: "smtp.zoho.com",
+  port: 465,
+  secure: true,
   auth: {
     user: smptUser,
     pass: smptPassword,
@@ -25,23 +25,29 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post("/receive-email", (req, res) => {
-  console.log(req.body);
   const { name, email, subject, message, phoneNumber } = req.body;
+  console.log(name, email, subject, message, phoneNumber);
   const senderName = name;
   const senderEmail = email;
   const mailOptions = {
-    from: `${senderName} <${senderEmail}>`,
-    to: "contact@solarclassng.com",
+    from: `"${name} ${email}" <${smptUser}>`, // Must match authenticated email
+    replyTo: `${senderName} <${senderEmail}>`, // Optional: allows recipients to reply directly to the sender
+    to: "gasomba@solarclassng.com",
     subject: subject,
     text: `
-    ${message}
-    ${phoneNumber ? `Phone Number: ${phoneNumber}` : ''}`,
+    Name: ${senderName}
+    Email: ${senderEmail}
+    Subject: ${subject}
+${phoneNumber ? `Phone Number: ${phoneNumber}` : ""}
+      ${message}
+      `,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
+      console.log(res);
       console.log(error);
-      res.status(500).send("failed");
+      res.status(500).send(error);
     } else {
       console.log("Email sent: " + info.response);
       res.status(200).send("sent");
