@@ -13,7 +13,6 @@ app.use(cors());
 let smptUser = process.env.SMTP_USERNAME;
 let smptPassword = process.env.SMTP_PASSWORD;
 
-
 const transporter = nodemailer.createTransport({
   host: "smtp.zoho.com",
   port: 465,
@@ -29,17 +28,18 @@ app.post("/receive-email", (req, res) => {
   const senderName = name;
   const senderEmail = email;
   const mailOptions = {
-    from: `"${name} ${email}" <${smptUser}>`, // Must match authenticated email
-    replyTo: `${senderName} <${senderEmail}>`, // Optional: allows recipients to reply directly to the sender
+    from: `"${name} ${email}" <${smptUser}>`,
+    replyTo: `${senderName} <${senderEmail}>`,
     to: "gasomba@solarclassng.com",
     subject: subject,
     text: `
-    Name: ${senderName}
-    Email: ${senderEmail}
-    Subject: ${subject}
-${phoneNumber ? `Phone Number: ${phoneNumber}` : ""}
-      ${message}
-      `,
+  Name: ${senderName}
+  Email: ${senderEmail}
+  Subject: ${subject}
+  ${phoneNumber ? `Phone Number: ${phoneNumber}\n` : ""}
+  Message:
+  ${message}
+    `,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
